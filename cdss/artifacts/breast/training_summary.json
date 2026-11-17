@@ -1,0 +1,29 @@
+{
+  "dataset_metadata": {
+    "dataset": "Breast Cancer Wisconsin (Diagnostic)",
+    "source": "UCI Machine Learning Repository",
+    "records_before_duplicate_removal": 569,
+    "records_after_duplicate_removal": 569,
+    "duplicate_rows_removed": 0,
+    "feature_count": 30,
+    "missing_values": 0,
+    "target_mapping": {
+      "Benign (B)": 0,
+      "Malignant (M)": 1
+    },
+    "class_distribution": {
+      "Benign": 357,
+      "Malignant": 212
+    }
+  },
+  "selected_model": "Support Vector Machine",
+  "eda_outputs": {
+    "feature_summary": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/feature_summary.csv",
+    "feature_correlations": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/feature_correlations.csv",
+    "class_distribution": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/class_distribution.png",
+    "feature_distributions": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/feature_distributions.png",
+    "correlation_heatmap": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/correlation_heatmap.png"
+  },
+  "model_comparison": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/model_comparison.csv",
+  "best_model": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/best_model.joblib"
+}

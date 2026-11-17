@@ -1,0 +1,153 @@
+{
+  "dataset": "Breast Cancer Wisconsin (Diagnostic)",
+  "feature_names": [
+    "radius_mean",
+    "texture_mean",
+    "perimeter_mean",
+    "area_mean",
+    "smoothness_mean",
+    "compactness_mean",
+    "concavity_mean",
+    "concave_points_mean",
+    "symmetry_mean",
+    "fractal_dimension_mean",
+    "radius_se",
+    "texture_se",
+    "perimeter_se",
+    "area_se",
+    "smoothness_se",
+    "compactness_se",
+    "concavity_se",
+    "concave_points_se",
+    "symmetry_se",
+    "fractal_dimension_se",
+    "radius_worst",
+    "texture_worst",
+    "perimeter_worst",
+    "area_worst",
+    "smoothness_worst",
+    "compactness_worst",
+    "concavity_worst",
+    "concave_points_worst",
+    "symmetry_worst",
+    "fractal_dimension_worst"
+  ],
+  "test_set_size": 114,
+  "training_set_size": 455,
+  "random_state": 42,
+  "selection_metric": "f1_score",
+  "selection_rule": "Highest test F1-score; ties are resolved by recall, precision, then accuracy.",
+  "selected_model": "Support Vector Machine",
+  "selected_model_metrics": {
+    "accuracy": 0.9737,
+    "precision": 0.9756,
+    "recall": 0.9524,
+    "f1_score": 0.9639
+  },
+  "all_model_metrics": [
+    {
+      "model": "Support Vector Machine",
+      "accuracy": 0.9737,
+      "precision": 0.9756,
+      "recall": 0.9524,
+      "f1_score": 0.9639
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.9737,
+      "precision": 1.0,
+      "recall": 0.9286,
+      "f1_score": 0.963
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.9649,
+      "precision": 0.975,
+      "recall": 0.9286,
+      "f1_score": 0.9512
+    },
+    {
+      "model": "K-Nearest Neighbors",
+      "accuracy": 0.9561,
+      "precision": 0.9744,
+      "recall": 0.9048,
+      "f1_score": 0.9383
+    },
+    {
+      "model": "Decision Tree",
+      "accuracy": 0.9298,
+      "precision": 0.9048,
+      "recall": 0.9048,
+      "f1_score": 0.9048
+    }
+  ],
+  "confusion_matrices": {
+    "Logistic Regression": [
+      [
+        71,
+        1
+      ],
+      [
+        3,
+        39
+      ]
+    ],
+    "Decision Tree": [
+      [
+        68,
+        4
+      ],
+      [
+        4,
+        38
+      ]
+    ],
+    "Random Forest": [
+      [
+        72,
+        0
+      ],
+      [
+        3,
+        39
+      ]
+    ],
+    "Support Vector Machine": [
+      [
+        71,
+        1
+      ],
+      [
+        2,
+        40
+      ]
+    ],
+    "K-Nearest Neighbors": [
+      [
+        71,
+        1
+      ],
+      [
+        4,
+        38
+      ]
+    ]
+  },
+  "dataset_metadata": {
+    "dataset": "Breast Cancer Wisconsin (Diagnostic)",
+    "source": "UCI Machine Learning Repository",
+    "records_before_duplicate_removal": 569,
+    "records_after_duplicate_removal": 569,
+    "duplicate_rows_removed": 0,
+    "feature_count": 30,
+    "missing_values": 0,
+    "target_mapping": {
+      "Benign (B)": 0,
+      "Malignant (M)": 1
+    },
+    "class_distribution": {
+      "Benign": 357,
+      "Malignant": 212
+    }
+  }
+}
