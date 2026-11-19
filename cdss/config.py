@@ -10,12 +10,16 @@ DATA_DIR = CDSS_ROOT / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 ARTIFACTS_DIR = CDSS_ROOT / "artifacts" / "breast"
 REPORTS_DIR = ARTIFACTS_DIR / "reports"
+MODEL_PIPELINES_PATH = ARTIFACTS_DIR / "model_pipelines.joblib"
 
 WDBC_PATH = RAW_DATA_DIR / "wdbc.data"
 
 RANDOM_STATE = 42
 TEST_SIZE = 0.20
-SELECTION_METRIC = "f1_score"
+# Validation is a proportion of the 80% development partition. Together with
+# TEST_SIZE this gives a stratified 60/20/20 train/validation/test split.
+VALIDATION_SIZE = 0.25
+SELECTION_METRIC = "recall"
 MODEL_NAMES = (
     "Logistic Regression",
     "Decision Tree",

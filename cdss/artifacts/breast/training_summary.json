@@ -17,6 +17,12 @@
     }
   },
   "selected_model": "Support Vector Machine",
+  "selected_model_test_metrics": {
+    "accuracy": 0.9737,
+    "precision": 0.9756,
+    "recall": 0.9524,
+    "f1_score": 0.9639
+  },
   "eda_outputs": {
     "feature_summary": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/feature_summary.csv",
     "feature_correlations": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/feature_correlations.csv",
@@ -25,5 +31,6 @@
     "correlation_heatmap": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/reports/correlation_heatmap.png"
   },
   "model_comparison": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/model_comparison.csv",
-  "best_model": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/best_model.joblib"
+  "best_model": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/best_model.joblib",
+  "model_pipelines": "/home/pj/Projects/Breast_Cancer_Pridiction/cdss/artifacts/breast/model_pipelines.joblib"
 }

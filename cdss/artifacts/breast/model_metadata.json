@@ -32,107 +32,121 @@
     "symmetry_worst",
     "fractal_dimension_worst"
   ],
+  "training_set_size": 341,
+  "validation_set_size": 114,
   "test_set_size": 114,
-  "training_set_size": 455,
   "random_state": 42,
-  "selection_metric": "f1_score",
-  "selection_rule": "Highest test F1-score; ties are resolved by recall, precision, then accuracy.",
+  "selection_metric": "recall",
+  "selection_rule": "Highest validation recall; ties are resolved by F1-score, precision, then accuracy.",
   "selected_model": "Support Vector Machine",
-  "selected_model_metrics": {
+  "selected_model_validation_metrics": {
+    "accuracy": 0.9825,
+    "precision": 0.9767,
+    "recall": 0.9767,
+    "f1_score": 0.9767
+  },
+  "selected_model_test_metrics": {
     "accuracy": 0.9737,
     "precision": 0.9756,
     "recall": 0.9524,
     "f1_score": 0.9639
   },
-  "all_model_metrics": [
+  "all_model_validation_metrics": [
     {
       "model": "Support Vector Machine",
+      "accuracy": 0.9825,
+      "precision": 0.9767,
+      "recall": 0.9767,
+      "f1_score": 0.9767
+    },
+    {
+      "model": "Logistic Regression",
       "accuracy": 0.9737,
-      "precision": 0.9756,
-      "recall": 0.9524,
-      "f1_score": 0.9639
+      "precision": 0.9545,
+      "recall": 0.9767,
+      "f1_score": 0.9655
     },
     {
       "model": "Random Forest",
       "accuracy": 0.9737,
-      "precision": 1.0,
-      "recall": 0.9286,
-      "f1_score": 0.963
-    },
-    {
-      "model": "Logistic Regression",
-      "accuracy": 0.9649,
-      "precision": 0.975,
-      "recall": 0.9286,
-      "f1_score": 0.9512
+      "precision": 0.9762,
+      "recall": 0.9535,
+      "f1_score": 0.9647
     },
     {
       "model": "K-Nearest Neighbors",
-      "accuracy": 0.9561,
-      "precision": 0.9744,
-      "recall": 0.9048,
-      "f1_score": 0.9383
+      "accuracy": 0.9737,
+      "precision": 1.0,
+      "recall": 0.9302,
+      "f1_score": 0.9639
     },
     {
       "model": "Decision Tree",
-      "accuracy": 0.9298,
-      "precision": 0.9048,
-      "recall": 0.9048,
-      "f1_score": 0.9048
+      "accuracy": 0.8947,
+      "precision": 0.8298,
+      "recall": 0.907,
+      "f1_score": 0.8667
     }
   ],
-  "confusion_matrices": {
+  "validation_confusion_matrices": {
     "Logistic Regression": [
       [
-        71,
-        1
+        69,
+        2
       ],
       [
-        3,
-        39
+        1,
+        42
       ]
     ],
     "Decision Tree": [
       [
-        68,
-        4
+        63,
+        8
       ],
       [
         4,
-        38
+        39
       ]
     ],
     "Random Forest": [
       [
-        72,
-        0
-      ],
-      [
-        3,
-        39
-      ]
-    ],
-    "Support Vector Machine": [
-      [
-        71,
+        70,
         1
       ],
       [
         2,
-        40
+        41
+      ]
+    ],
+    "Support Vector Machine": [
+      [
+        70,
+        1
+      ],
+      [
+        1,
+        42
       ]
     ],
     "K-Nearest Neighbors": [
       [
         71,
-        1
+        0
       ],
       [
-        4,
-        38
+        3,
+        40
       ]
     ]
   },
+  "available_prediction_models": [
+    "Logistic Regression",
+    "Decision Tree",
+    "Random Forest",
+    "Support Vector Machine",
+    "K-Nearest Neighbors"
+  ],
   "dataset_metadata": {
     "dataset": "Breast Cancer Wisconsin (Diagnostic)",
     "source": "UCI Machine Learning Repository",

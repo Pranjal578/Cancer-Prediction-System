@@ -30,11 +30,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
-from config import RANDOM_STATE, TEST_SIZE
+from config import RANDOM_STATE, TEST_SIZE, VALIDATION_SIZE
 from src.pipeline.preprocessor import build_preprocessor
 
 SELECTION_RULE = (
-    "Highest test F1-score; ties are resolved by recall, precision, then accuracy."
+    "Highest validation recall; ties are resolved by F1-score, precision, then accuracy."
 )
 
 
@@ -74,10 +74,10 @@ def _calculate_metrics(y_true: pd.Series, y_pred: np.ndarray) -> dict[str, float
 
 
 def _save_comparison_chart(results: pd.DataFrame, output_path: Path) -> None:
-    """Save a grouped bar chart for the four required evaluation metrics."""
+    """Save a grouped bar chart for the validation comparison metrics."""
     chart_data = results.set_index("model")[["accuracy", "precision", "recall", "f1_score"]]
     ax = chart_data.plot(kind="bar", figsize=(12, 6), color=["#2563eb", "#7c3aed", "#ea580c", "#16a34a"])
-    ax.set_title("Model comparison on the held-out test set")
+    ax.set_title("Model comparison on the validation set")
     ax.set_xlabel("Classifier")
     ax.set_ylabel("Score")
     ax.set_ylim(0, 1.05)
@@ -92,7 +92,7 @@ def _save_comparison_chart(results: pd.DataFrame, output_path: Path) -> None:
 def _save_confusion_matrices(
     confusion_matrices: dict[str, list[list[int]]], output_path: Path
 ) -> None:
-    """Save one confusion-matrix panel for each classifier."""
+    """Save one validation confusion-matrix panel for each classifier."""
     fig, axes = plt.subplots(2, 3, figsize=(14, 9))
     for ax, (name, matrix) in zip(axes.flat, confusion_matrices.items()):
         ConfusionMatrixDisplay(
@@ -100,7 +100,7 @@ def _save_confusion_matrices(
         ).plot(ax=ax, colorbar=False, cmap="Blues")
         ax.set_title(name)
     axes.flat[-1].axis("off")
-    fig.suptitle("Confusion matrices — held-out test set", fontsize=16)
+    fig.suptitle("Confusion matrices — validation set", fontsize=16)
     fig.tight_layout()
     fig.savefig(output_path, dpi=160)
     plt.close(fig)
@@ -113,31 +113,44 @@ def train_and_compare_models(
     output_dir: Path,
     dataset_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Train all five models, select the best one, and save reproducible outputs."""
+    """Compare on validation data, select by recall, then test only the winner."""
     output_dir.mkdir(parents=True, exist_ok=True)
-    X_train, X_test, y_train, y_test = train_test_split(
+    X_development, X_test, y_development, y_test = train_test_split(
         X,
         y,
         test_size=TEST_SIZE,
         stratify=y,
         random_state=RANDOM_STATE,
     )
+    X_train, X_validation, y_train, y_validation = train_test_split(
+        X_development,
+        y_development,
+        test_size=VALIDATION_SIZE,
+        stratify=y_development,
+        random_state=RANDOM_STATE,
+    )
 
-    fitted_models: dict[str, Pipeline] = {}
     comparison_rows: list[dict[str, Any]] = []
     matrices: dict[str, list[list[int]]] = {}
     for model_name, model in build_model_pipelines().items():
         model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        fitted_models[model_name] = model
-        comparison_rows.append({"model": model_name, **_calculate_metrics(y_test, predictions)})
-        matrices[model_name] = confusion_matrix(y_test, predictions, labels=[0, 1]).tolist()
+        predictions = model.predict(X_validation)
+        comparison_rows.append(
+            {"model": model_name, **_calculate_metrics(y_validation, predictions)}
+        )
+        matrices[model_name] = confusion_matrix(
+            y_validation, predictions, labels=[0, 1]
+        ).tolist()
 
     comparison = pd.DataFrame(comparison_rows).sort_values(
-        ["f1_score", "recall", "precision", "accuracy"], ascending=False
+        ["recall", "f1_score", "precision", "accuracy"], ascending=False
     ).reset_index(drop=True)
     selected_model_name = str(comparison.iloc[0]["model"])
-    selected_model = fitted_models[selected_model_name]
+    deployment_models = build_model_pipelines()
+    for model in deployment_models.values():
+        model.fit(X_development, y_development)
+    selected_model = deployment_models[selected_model_name]
+    final_test_metrics = _calculate_metrics(y_test, selected_model.predict(X_test))
 
     comparison_csv = output_dir / "model_comparison.csv"
     comparison.to_csv(comparison_csv, index=False)
@@ -148,18 +161,23 @@ def train_and_compare_models(
 
     model_path = output_dir / "best_model.joblib"
     joblib.dump(selected_model, model_path)
+    model_pipelines_path = output_dir / "model_pipelines.joblib"
+    joblib.dump(deployment_models, model_pipelines_path)
     metadata = {
         "dataset": "Breast Cancer Wisconsin (Diagnostic)",
         "feature_names": feature_names,
-        "test_set_size": int(len(X_test)),
         "training_set_size": int(len(X_train)),
+        "validation_set_size": int(len(X_validation)),
+        "test_set_size": int(len(X_test)),
         "random_state": RANDOM_STATE,
-        "selection_metric": "f1_score",
+        "selection_metric": "recall",
         "selection_rule": SELECTION_RULE,
         "selected_model": selected_model_name,
-        "selected_model_metrics": comparison.iloc[0].drop(labels="model").to_dict(),
-        "all_model_metrics": comparison.to_dict(orient="records"),
-        "confusion_matrices": matrices,
+        "selected_model_validation_metrics": comparison.iloc[0].drop(labels="model").to_dict(),
+        "selected_model_test_metrics": final_test_metrics,
+        "all_model_validation_metrics": comparison.to_dict(orient="records"),
+        "validation_confusion_matrices": matrices,
+        "available_prediction_models": list(deployment_models),
         "dataset_metadata": dataset_metadata or {},
     }
     metadata_path = output_dir / "model_metadata.json"
@@ -168,8 +186,10 @@ def train_and_compare_models(
     return {
         "selected_model": selected_model_name,
         "comparison": comparison,
-        "confusion_matrices": matrices,
+        "validation_confusion_matrices": matrices,
+        "selected_model_test_metrics": final_test_metrics,
         "model_path": model_path,
+        "model_pipelines_path": model_pipelines_path,
         "metadata_path": metadata_path,
         "comparison_csv": comparison_csv,
         "comparison_chart": comparison_chart,

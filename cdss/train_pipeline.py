@@ -35,9 +35,11 @@ def run_training(output_dir: Path | None = None) -> dict:
     run_summary = {
         "dataset_metadata": dataset_metadata,
         "selected_model": training_outputs["selected_model"],
+        "selected_model_test_metrics": training_outputs["selected_model_test_metrics"],
         "eda_outputs": {name: str(path) for name, path in eda_outputs.items()},
         "model_comparison": str(training_outputs["comparison_csv"]),
         "best_model": str(training_outputs["model_path"]),
+        "model_pipelines": str(training_outputs["model_pipelines_path"]),
     }
     (artifacts_dir / "training_summary.json").write_text(
         json.dumps(run_summary, indent=2), encoding="utf-8"
@@ -51,6 +53,8 @@ def main() -> None:
     print(f"Selected model: {outputs['selected_model']}")
     print("\nModel comparison:")
     print(outputs["comparison"].to_string(index=False))
+    print("\nSelected-model metrics on the untouched test set:")
+    print(outputs["selected_model_test_metrics"])
     print(f"\nSaved model: {outputs['model_path']}")
     print(f"Saved reports: {REPORTS_DIR}")
 

@@ -1,6 +1,6 @@
 model,accuracy,precision,recall,f1_score
-Support Vector Machine,0.9737,0.9756,0.9524,0.9639
-Random Forest,0.9737,1.0,0.9286,0.963
-Logistic Regression,0.9649,0.975,0.9286,0.9512
-K-Nearest Neighbors,0.9561,0.9744,0.9048,0.9383
-Decision Tree,0.9298,0.9048,0.9048,0.9048
+Support Vector Machine,0.9825,0.9767,0.9767,0.9767
+Logistic Regression,0.9737,0.9545,0.9767,0.9655
+Random Forest,0.9737,0.9762,0.9535,0.9647
+K-Nearest Neighbors,0.9737,1.0,0.9302,0.9639
+Decision Tree,0.8947,0.8298,0.907,0.8667
