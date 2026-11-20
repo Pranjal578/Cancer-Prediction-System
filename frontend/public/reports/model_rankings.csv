@@ -1,0 +1,5 @@
+Model,Accuracy,Precision,F1-Score,Recall,ROC-AUC
+TabPFN,0.9825,1.0,0.9756,0.9524,0.9977
+XGBoost,0.9737,1.0,0.963,0.9286,0.9914
+CatBoost,0.9649,1.0,0.95,0.9048,0.9983
+FT-Transformer,0.9649,0.975,0.9512,0.9286,0.9769

@@ -8,6 +8,8 @@ This application does **not** expose or depend on an MCP server. There are no MC
 
 The agreed product is a local Streamlit demonstration for a fixed WDBC dataset. Its required flow is local data loading, model comparison, saved-model prediction, and visual reporting. MCP integration would add an external integration surface that is outside the approved scope.
 
+The optional local report-value parser likewise runs in the Streamlit process and does not create an MCP server, tool, resource, credential, or external upload destination.
+
 ## Boundary
 
 - The Streamlit health route is not an MCP endpoint.

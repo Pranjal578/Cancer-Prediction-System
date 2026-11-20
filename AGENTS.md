@@ -17,14 +17,19 @@ They are the source of truth for the active product scope and current handoff st
 
 ## Active scope
 
-- This is a **breast-cancer-only educational prediction application**.
-- It uses the Wisconsin Diagnostic Breast Cancer (WDBC) dataset: 569 records and 30 numeric FNA measurements.
-- The only supported outcome is `Benign` or `Malignant`.
-- The required models are Logistic Regression, Decision Tree, Random Forest, Support Vector Machine, and K-Nearest Neighbors.
-- The application compares all five models and saves the selected model using the selection rule recorded in `PRD.md` and `PLAN.md`.
-- The active interface is Streamlit. There is no business REST API and no database.
+- This is an academic research and comparative machine learning / explainable AI (XAI) framework for breast cancer classification using the Wisconsin Diagnostic Breast Cancer (WDBC) dataset: 569 records, 30 numerical FNA measurements, binary classification into `Benign` (0) and `Malignant` (1).
+- The framework investigates and compares four advanced ML and deep learning models:
+  1. **TabPFN-2.5** (Primary candidate model)
+  2. **CatBoost** (Gradient boosting benchmark)
+  3. **FT-Transformer** (Deep learning benchmark for tabular data)
+  4. **XGBoost** (Gradient boosting benchmark)
+- Comprehensive comparative evaluation across 12 metrics: Accuracy, Precision, F1-Score, Recall, ROC-AUC, Sensitivity, Specificity, Balanced Accuracy, MCC, NPV, Log Loss, Brier Score, plus Expected Calibration Error (ECE).
+- Rigorous calibration analysis (Reliability diagrams, Platt Scaling, Isotonic Regression).
+- Explainable AI (XAI) module: SHAP analysis (summary, beeswarm, waterfall, dependence), native/permutation/SHAP feature importance.
+- User interface: **Streamlit Research & Evaluation Workbench** providing comprehensive access to all 10 research modules (Dashboard, Dataset Exploration, 12-Metric Comparison, ROC/PR/Calibration plots, 30-feature Multi-Model Prediction, SHAP Beeswarm/Summary/Bar/Dependence, Feature Importance, Individual Prediction Waterfall explanation, Calibration before/after, and IEEE-format Research Report).
+- The raw WDBC data is preserved unchanged at `cdss/data/raw/wdbc.data`.
 
-Do not reintroduce cervical-cancer workflows, XGBoost, SHAP, FastAPI, document parsing, batch triage, audit logging, or patient-history functionality without explicit user approval and a corresponding update to these documents.
+Do not reintroduce cervical-cancer workflows, patient-history tracking, or unverified automated clinical diagnosis without explicit user approval.
 
 ## Documentation synchronization rule
 
@@ -48,6 +53,15 @@ Never leave implementation and these documents out of sync. If no document chang
 ## Commands
 
 ```bash
+# Research Experiments (4 models, 5-fold CV, SHAP, calibration, evaluation)
+cd research
+../cdss/.venv/bin/python run_experiments.py
+
+# Streamlit Research Dashboard & Workbench
+cd research
+../cdss/.venv/bin/streamlit run app.py --server.port 8501 --server.headless true
+
+# Legacy Educational Streamlit Workbench
 cd cdss
 .venv/bin/python train_pipeline.py
 .venv/bin/pytest -q
